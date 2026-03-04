@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
+import { RoadmapModule } from './roadmap/roadmap.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsuarioModule,
     AuthModule,
+    RoadmapModule,
   ],
   controllers: [AppController],
   providers: [AppService],

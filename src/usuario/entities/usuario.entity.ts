@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Usuario {
@@ -13,4 +14,7 @@ export class Usuario {
 
   @Column()
   nome: string;
+
+  @OneToMany(() => Roadmap, (roadmap) => roadmap.usuario)
+  roadmaps: Roadmap[];
 }
