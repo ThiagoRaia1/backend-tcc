@@ -41,8 +41,8 @@ export class UsuarioService {
     return await this.usuarioRepository.findOne({ where: { id } });
   }
 
-  findOneByEmail(email: string) {
-    return this.usuarioRepository.findOneBy({ email });
+  async findOneByEmail(email: string) {
+    return await this.usuarioRepository.findOneBy({ email });
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
@@ -55,6 +55,18 @@ export class UsuarioService {
     Object.assign(usuario, updateUsuarioDto);
 
     return await this.usuarioRepository.save(usuario);
+  }
+
+  async desativarConta(id: number) {
+    const result = await this.usuarioRepository.update(id, {
+      ativo: false,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return { message: 'Usuário desativado com sucesso' };
   }
 
   async remove(id: number) {
