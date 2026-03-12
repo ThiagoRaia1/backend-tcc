@@ -45,14 +45,36 @@ export class UsuarioService {
     return await this.usuarioRepository.findOneBy({ email });
   }
 
+  async verificarSenha(email: string, senha: string) {
+    const usuario = await this.findOneByEmail(email);
+
+    if (!usuario) {
+      return false;
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+
+    return senhaCorreta;
+  }
+
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     const usuario = await this.findOne(id);
 
     if (!usuario) {
-      throw new NotFoundException();
+      throw new NotFoundException('Usuário não encontrado');
     }
 
-    Object.assign(usuario, updateUsuarioDto);
+    if (updateUsuarioDto.nome) {
+      usuario.nome = updateUsuarioDto.nome;
+    }
+
+    if (updateUsuarioDto.email) {
+      usuario.email = updateUsuarioDto.email;
+    }
+
+    if (updateUsuarioDto.novaSenha) {
+      usuario.senha = await bcrypt.hash(updateUsuarioDto.novaSenha, 10);
+    }
 
     return await this.usuarioRepository.save(usuario);
   }
