@@ -15,7 +15,7 @@ export class Usuario {
   @Column()
   nome: string;
 
-  @Column({ nullable: true })
+  @Column({ default: true })
   ativo: boolean;
 
   @OneToMany(() => Roadmap, (roadmap) => roadmap.usuario)

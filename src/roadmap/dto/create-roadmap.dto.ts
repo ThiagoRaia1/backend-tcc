@@ -1,12 +1,44 @@
-// create-roadmap.dto.ts
 import { Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateEtapaDto } from 'src/etapa/dto/create-etapa.dto';
+import { CreateObjetivoDto } from 'src/objetivo/dto/create-objetivo.dto';
+import { CreateRecursoSugeridoDto } from 'src/recurso-sugerido/dto/create-recurso-sugerido.dto';
 
 export class CreateRoadmapDto {
   @IsString()
   tema: string;
+}
 
-  @Type(() => Number) // transforma string em number
+export class SalvarRoadmapDto {
+  @IsString()
+  tema: string;
+
+  @IsString()
+  descricaoGeral: string;
+
+  @IsString()
+  duracaoEstimada: string;
+
+  @IsString()
+  nivel: 'iniciante' | 'intermediario' | 'avancado';
+
   @IsNumber()
   usuarioId: number;
+
+  @IsOptional()
+  @IsNumber()
+  porcentagemConclusao?: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateEtapaDto)
+  etapas: CreateEtapaDto[];
 }

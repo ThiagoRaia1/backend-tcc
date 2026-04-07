@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RoadmapService } from './roadmap.service';
-import { CreateRoadmapDto } from './dto/create-roadmap.dto';
+import { CreateRoadmapDto, SalvarRoadmapDto } from './dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 
 @Controller('roadmap')
@@ -8,8 +16,14 @@ export class RoadmapController {
   constructor(private readonly roadmapService: RoadmapService) {}
 
   @Post()
-  create(@Body() createRoadmapDto: CreateRoadmapDto) {
-    return this.roadmapService.create(createRoadmapDto);
+  create(@Body() tema: CreateRoadmapDto) {
+    return this.roadmapService.create(tema);
+  }
+
+  @Post('/salvar')
+  salvar(@Body() createRoadmapDto: SalvarRoadmapDto) {
+    console.log("Entrou no controller do salvar")
+    return this.roadmapService.salvar(createRoadmapDto);
   }
 
   @Get()

@@ -1,6 +1,15 @@
-// roadmap.entity.ts
+import { Etapa } from 'src/etapa/entities/etapa.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+
+type Nivel = 'iniciante' | 'intermediario' | 'avancado';
 
 @Entity()
 export class Roadmap {
@@ -11,16 +20,16 @@ export class Roadmap {
   tema: string;
 
   @Column()
-  nivel: string;
+  descricaoGeral: string;
 
   @Column()
-  duracao_estimada: string;
+  duracaoEstimada: string;
 
-  @Column({ type: 'text' })
-  descricao_geral: string;
-
-  @Column({ type: 'json' })
-  etapas: any;
+  @Column({
+    type: 'enum',
+    enum: ['iniciante', 'intermediario', 'avancado'],
+  })
+  nivel: Nivel;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.roadmaps, {
     onDelete: 'CASCADE',
@@ -28,6 +37,12 @@ export class Roadmap {
   @JoinColumn({ name: 'usuarioId' })
   usuario: Usuario;
 
-  @Column()
-  usuarioId: number;
+  @Column({ default: 0 })
+  porcentagemConclusao: number;
+
+  @OneToMany(() => Etapa, (etapa) => etapa.roadmap, {
+    cascade: true,
+    eager: true,
+  })
+  etapas: Etapa[];
 }

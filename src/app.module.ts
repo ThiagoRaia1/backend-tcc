@@ -7,6 +7,9 @@ import { join } from 'path';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { RoadmapModule } from './roadmap/roadmap.module';
+import { EtapaModule } from './etapa/etapa.module';
+import { ObjetivoModule } from './objetivo/objetivo.module';
+import { RecursoSugeridoModule } from './recurso-sugerido/recurso-sugerido.module';
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { RoadmapModule } from './roadmap/roadmap.module';
     UsuarioModule,
     AuthModule,
     RoadmapModule,
+    EtapaModule,
+    ObjetivoModule,
+    RecursoSugeridoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

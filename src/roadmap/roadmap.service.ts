@@ -1,9 +1,20 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import OpenAI from 'openai';
 import { Roadmap } from './entities/roadmap.entity';
-import { CreateRoadmapDto } from './dto/create-roadmap.dto';
+import { CreateRoadmapDto, SalvarRoadmapDto } from './dto/create-roadmap.dto';
+import { Etapa } from 'src/etapa/entities/etapa.entity';
+import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
+import { CreateEtapaDto } from 'src/etapa/dto/create-etapa.dto';
+import { CreateObjetivoDto } from 'src/objetivo/dto/create-objetivo.dto';
+import { CreateRecursoSugeridoDto } from 'src/recurso-sugerido/dto/create-recurso-sugerido.dto';
+import { RecursoSugerido } from 'src/recurso-sugerido/entities/recurso-sugerido.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 @Injectable()
 export class RoadmapService {
@@ -15,10 +26,13 @@ export class RoadmapService {
   constructor(
     @InjectRepository(Roadmap)
     private roadmapRepository: Repository<Roadmap>,
+
+    @InjectRepository(Usuario)
+    private usuarioRepository: Repository<Usuario>,
   ) {}
 
   async create(createRoadmapDto: CreateRoadmapDto) {
-  const { tema, usuarioId } = createRoadmapDto;
+    const { tema } = createRoadmapDto;
 
     const response = await this.client.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
@@ -39,21 +53,26 @@ Não inclua texto fora do JSON.
           content: `
 Crie um roadmap completo para aprender ${tema}.
 
-Formato obrigatório:
+Formato obrigatório (JSON válido):
 
 {
-  "tema": "string",
+  "tema": "${tema}",
   "nivel": "iniciante | intermediario | avancado",
-  "duracao_estimada": "string",
-  "descricao_geral": "string",
+  "duracaoEstimada": "string",
+  "descricaoGeral": "string",
   "etapas": [
     {
       "ordem": number,
       "titulo": "string",
       "descricao": "string",
       "duracao": "string",
-      "objetivos": ["string"],
-      "recursos_sugeridos": ["string"]
+      "concluido": false,
+      "objetivos": [
+        { "descricao": "string", "concluido": false }
+      ],
+      "recursosSugeridos": [
+        { "titulo": "string", "link": "url" (optional), "tipo": "video" | "artigo" | "app" | "livro" }
+      ],
     }
   ]
 }
@@ -72,12 +91,25 @@ Formato obrigatório:
       throw new InternalServerErrorException('A IA retornou JSON inválido.');
     }
 
-    const roadmap = this.roadmapRepository.create({
-    ...roadmapJson,
-    usuarioId, // 👈 AGORA vinculando ao usuário
-  });
+    console.log(roadmapJson.etapas[0].objetivos[0]);
 
-    return await this.roadmapRepository.save(roadmap);
+    return roadmapJson;
+  }
+
+  async salvar(salvarRoadmapDto: SalvarRoadmapDto) {
+    const usuariologado: Usuario | null = await this.usuarioRepository.findOne({
+      where: { id: salvarRoadmapDto.usuarioId },
+    });
+
+    if (!usuariologado) return;
+
+    const roadmapCriado = this.roadmapRepository.create({
+      ...salvarRoadmapDto,
+      usuario: usuariologado,
+    });
+    const roadmapSalvo = await this.roadmapRepository.save(roadmapCriado);
+    
+    return roadmapSalvo;
   }
 
   async findAll() {
