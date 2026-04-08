@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { EtapaService } from './etapa.service';
 import { CreateEtapaDto } from './dto/create-etapa.dto';
 import { UpdateEtapaDto } from './dto/update-etapa.dto';
+import { UpdateAnotacaoDto } from './dto/update-anotacao.dto';
 
 @Controller('etapa')
 export class EtapaController {
@@ -25,6 +34,11 @@ export class EtapaController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEtapaDto: UpdateEtapaDto) {
     return this.etapaService.update(+id, updateEtapaDto);
+  }
+
+  @Patch(':id/anotacao')
+  updateAnotacao(@Param('id') id: number, @Body() dto: UpdateAnotacaoDto) {
+    return this.etapaService.updateAnotacao(id, dto);
   }
 
   @Delete(':id')

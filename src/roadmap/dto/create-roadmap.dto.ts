@@ -1,16 +1,12 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsInt,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { CreateEtapaDto } from 'src/etapa/dto/create-etapa.dto';
-import { CreateObjetivoDto } from 'src/objetivo/dto/create-objetivo.dto';
-import { CreateRecursoSugeridoDto } from 'src/recurso-sugerido/dto/create-recurso-sugerido.dto';
 
 export class CreateRoadmapDto {
   @IsString()

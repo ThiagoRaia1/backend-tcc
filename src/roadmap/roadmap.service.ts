@@ -1,19 +1,9 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import OpenAI from 'openai';
 import { Roadmap } from './entities/roadmap.entity';
 import { CreateRoadmapDto, SalvarRoadmapDto } from './dto/create-roadmap.dto';
-import { Etapa } from 'src/etapa/entities/etapa.entity';
-import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
-import { CreateEtapaDto } from 'src/etapa/dto/create-etapa.dto';
-import { CreateObjetivoDto } from 'src/objetivo/dto/create-objetivo.dto';
-import { CreateRecursoSugeridoDto } from 'src/recurso-sugerido/dto/create-recurso-sugerido.dto';
-import { RecursoSugerido } from 'src/recurso-sugerido/entities/recurso-sugerido.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 @Injectable()
@@ -70,9 +60,6 @@ Formato obrigatório (JSON válido):
       "objetivos": [
         { "descricao": "string", "concluido": false }
       ],
-      "recursosSugeridos": [
-        { "titulo": "string", "link": "url" (optional), "tipo": "video" | "artigo" | "app" | "livro" }
-      ],
     }
   ]
 }
@@ -91,8 +78,6 @@ Formato obrigatório (JSON válido):
       throw new InternalServerErrorException('A IA retornou JSON inválido.');
     }
 
-    console.log(roadmapJson.etapas[0].objetivos[0]);
-
     return roadmapJson;
   }
 
@@ -108,7 +93,7 @@ Formato obrigatório (JSON válido):
       usuario: usuariologado,
     });
     const roadmapSalvo = await this.roadmapRepository.save(roadmapCriado);
-    
+
     return roadmapSalvo;
   }
 
@@ -118,6 +103,24 @@ Formato obrigatório (JSON válido):
 
   async findOne(id: number) {
     return await this.roadmapRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateRoadmapDto: Partial<SalvarRoadmapDto>) {
+    const roadmap = await this.roadmapRepository.findOne({
+      where: { id },
+      relations: ['usuario'], // opcional (se precisar)
+    });
+
+    if (!roadmap) {
+      throw new NotFoundException('Roadmap não encontrado.');
+    }
+
+    // Mescla os dados antigos com os novos
+    Object.assign(roadmap, updateRoadmapDto);
+
+    const roadmapAtualizado = await this.roadmapRepository.save(roadmap);
+
+    return roadmapAtualizado;
   }
 
   async remove(id: number) {

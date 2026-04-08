@@ -27,8 +27,14 @@ export class Etapa {
   @Column()
   duracao: string;
 
-  @Column({ default: false })
+  @Column()
   concluido: boolean;
+
+  @Column({ type: 'json', nullable: true })
+  anotacoes: {
+    plainText: string;
+    editorState: string | null;
+  };
 
   @ManyToOne(() => Roadmap, (roadmap) => roadmap.etapas, {
     onDelete: 'CASCADE',

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateObjetivoDto } from 'src/objetivo/dto/create-objetivo.dto';
-import { CreateRecursoSugeridoDto } from 'src/recurso-sugerido/dto/create-recurso-sugerido.dto';
+import { AnotacaoDto } from './anotacao.dto';
 
 export class CreateEtapaDto {
   @IsString()
@@ -24,15 +24,15 @@ export class CreateEtapaDto {
   duracao: string;
 
   @IsBoolean()
-  concluido?: boolean;
+  concluido: boolean;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateObjetivoDto)
   objetivos: CreateObjetivoDto[];
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateRecursoSugeridoDto)
-  recursosSugeridos: CreateRecursoSugeridoDto[];
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AnotacaoDto)
+  anotacoes?: AnotacaoDto;
 }

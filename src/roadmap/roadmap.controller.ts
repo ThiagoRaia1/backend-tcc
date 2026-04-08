@@ -22,7 +22,7 @@ export class RoadmapController {
 
   @Post('/salvar')
   salvar(@Body() createRoadmapDto: SalvarRoadmapDto) {
-    console.log("Entrou no controller do salvar")
+    console.log('Entrou no controller do salvar');
     return this.roadmapService.salvar(createRoadmapDto);
   }
 
@@ -36,10 +36,10 @@ export class RoadmapController {
     return this.roadmapService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoadmapDto: UpdateRoadmapDto) {
-  //   return this.roadmapService.update(+id, updateRoadmapDto);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: number, @Body() updateRoadmapDto: any) {
+    return this.roadmapService.update(id, updateRoadmapDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
