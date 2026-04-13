@@ -21,8 +21,8 @@ export class EtapaService {
     return `This action returns all etapa`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} etapa`;
+  async findOne(id: number) {
+    return await this.etapaRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateEtapaDto: UpdateEtapaDto) {

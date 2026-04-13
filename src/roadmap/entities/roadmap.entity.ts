@@ -37,9 +37,6 @@ export class Roadmap {
   @JoinColumn({ name: 'usuarioId' })
   usuario: Usuario;
 
-  @Column({ default: 0 })
-  porcentagemConclusao: number;
-
   @OneToMany(() => Etapa, (etapa) => etapa.roadmap, {
     cascade: true,
     eager: true,

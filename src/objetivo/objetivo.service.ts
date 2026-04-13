@@ -39,7 +39,13 @@ export class ObjetivoService {
     return objetivoAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} objetivo`;
+  async remove(id: number) {
+    const objetivo = await this.objetivoRepository.findOne({ where: { id } });
+
+    if (!objetivo) {
+      throw new NotFoundException('Objetivo não encontrado.');
+    }
+
+    return await this.objetivoRepository.delete(id);
   }
 }
