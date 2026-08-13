@@ -13,6 +13,9 @@ export class Objetivo {
   id: number;
 
   @Column()
+  titulo: string;
+
+  @Column()
   descricao: string;
 
   @Column({ default: false })

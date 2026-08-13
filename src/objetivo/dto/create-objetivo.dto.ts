@@ -2,7 +2,12 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateObjetivoDto {
   @IsString()
-  descricao: string;
+  @IsOptional()
+  titulo?: string;
+
+  @IsString()
+  @IsOptional()
+  descricao?: string;
 
   @IsBoolean()
   @IsOptional()
