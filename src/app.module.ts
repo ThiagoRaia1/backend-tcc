@@ -10,6 +10,7 @@ import { RoadmapModule } from './roadmap/roadmap.module';
 import { EtapaModule } from './etapa/etapa.module';
 import { ObjetivoModule } from './objetivo/objetivo.module';
 import { RecursoSugeridoModule } from './recurso-sugerido/recurso-sugerido.module';
+import { ReferenciasModule } from './referencias/referencias.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { RecursoSugeridoModule } from './recurso-sugerido/recurso-sugerido.modul
     EtapaModule,
     ObjetivoModule,
     RecursoSugeridoModule,
+    ReferenciasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

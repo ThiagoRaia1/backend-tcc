@@ -26,10 +26,4 @@ export class RecursoSugerido {
     nullable: true,
   })
   tipo?: TipoRecurso;
-
-  @ManyToOne(() => Etapa, (etapa) => etapa.recursosSugeridos, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'etapaId' })
-  etapa: Etapa;
 }

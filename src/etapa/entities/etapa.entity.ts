@@ -1,5 +1,6 @@
 import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
 import { RecursoSugerido } from 'src/recurso-sugerido/entities/recurso-sugerido.entity';
+import { Referencia } from 'src/referencias/entities/referencia.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import {
   Column,
@@ -48,13 +49,10 @@ export class Etapa {
   })
   objetivos: Objetivo[];
 
-  @OneToMany(
-    () => RecursoSugerido,
-    (recursoSugeridos) => recursoSugeridos.etapa,
-    {
-      cascade: true,
-      eager: true,
-    },
-  )
-  recursosSugeridos: RecursoSugerido[];
+  @OneToMany(() => Referencia, (referencia) => referencia.etapa, {
+    cascade: true,
+    eager: true,
+    nullable: true,
+  })
+  referencias: Referencia[];
 }
