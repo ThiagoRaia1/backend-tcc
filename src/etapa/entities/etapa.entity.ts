@@ -26,9 +26,6 @@ export class Etapa {
   descricao: string;
 
   @Column()
-  duracao: string;
-
-  @Column()
   concluido: boolean;
 
   @Column({ type: 'json', nullable: true })

@@ -20,9 +20,6 @@ export class CreateEtapaDto {
   @IsString()
   descricao: string;
 
-  @IsString()
-  duracao: string;
-
   @IsBoolean()
   concluido: boolean;
 
