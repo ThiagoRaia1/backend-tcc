@@ -49,7 +49,7 @@ export class EtapaService {
     return this.etapaRepository.save(etapa);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} etapa`;
+  async remove(id: number) {
+    return await this.etapaRepository.delete(id);
   }
 }
