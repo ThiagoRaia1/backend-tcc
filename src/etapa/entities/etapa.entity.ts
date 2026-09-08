@@ -1,5 +1,4 @@
 import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
-import { RecursoSugerido } from 'src/recurso-sugerido/entities/recurso-sugerido.entity';
 import { Referencia } from 'src/referencias/entities/referencia.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import {

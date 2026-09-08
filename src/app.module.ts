@@ -9,7 +9,6 @@ import { AuthModule } from './auth/auth.module';
 import { RoadmapModule } from './roadmap/roadmap.module';
 import { EtapaModule } from './etapa/etapa.module';
 import { ObjetivoModule } from './objetivo/objetivo.module';
-import { RecursoSugeridoModule } from './recurso-sugerido/recurso-sugerido.module';
 import { ReferenciasModule } from './referencias/referencias.module';
 
 @Module({
@@ -20,12 +19,12 @@ import { ReferenciasModule } from './referencias/referencias.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        // host: configService.get('DB_HOST'),
-        // port: +configService.get('DB_PORT'),
-        // username: configService.get('DB_USERNAME'),
-        // password: configService.get('DB_PASSWORD'),
-        // database: configService.get('DB_NAME'),
+        // url: configService.get('DATABASE_URL'),
+        host: configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
         // Não use synchronize: true em produção
         synchronize: true,
@@ -36,7 +35,6 @@ import { ReferenciasModule } from './referencias/referencias.module';
     RoadmapModule,
     EtapaModule,
     ObjetivoModule,
-    RecursoSugeridoModule,
     ReferenciasModule,
   ],
   controllers: [AppController],
