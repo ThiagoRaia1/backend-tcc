@@ -17,8 +17,8 @@ export class Objetivo {
   @Column()
   titulo: string;
 
-  @Column()
-  descricao: string;
+  @Column({ nullable: true })
+  descricao?: string;
 
   @Column({ default: false })
   concluido: boolean;
