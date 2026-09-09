@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReferenciaDto } from './dto/create-referencia.dto';
 import { UpdateReferenciaDto } from './dto/update-referencia.dto';
 import { Referencia } from './entities/referencia.entity';
-import { create } from 'domain';
-import { async } from 'rxjs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -26,8 +24,22 @@ export class ReferenciasService {
     return `This action returns a #${id} referencia`;
   }
 
-  update(id: number, updateReferenciaDto: UpdateReferenciaDto) {
-    return `This action updates a #${id} referencia`;
+  async update(id: number, updateReferenciaDto: UpdateReferenciaDto) {
+    const referencia = await this.referenciaRepository.findOne({
+      where: { id },
+    });
+
+    if (!referencia) {
+      throw new NotFoundException('Referencia não encontrada.');
+    }
+
+    // Mescla os dados antigos com os novos
+    Object.assign(referencia, updateReferenciaDto);
+
+    const referenciaAtualizada =
+      await this.referenciaRepository.save(referencia);
+
+    return referenciaAtualizada;
   }
 
   async remove(id: number) {
