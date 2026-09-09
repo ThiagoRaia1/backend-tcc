@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { RoadmapService } from './roadmap.service';
 import { CreateRoadmapDto, SalvarRoadmapDto } from './dto/create-roadmap.dto';
-import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 
 @Controller('roadmap')
 export class RoadmapController {
@@ -22,7 +21,6 @@ export class RoadmapController {
 
   @Post('/salvar')
   salvar(@Body() createRoadmapDto: SalvarRoadmapDto) {
-    console.log('Entrou no controller do salvar');
     return this.roadmapService.salvar(createRoadmapDto);
   }
 

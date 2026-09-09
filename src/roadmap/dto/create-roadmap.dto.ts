@@ -20,12 +20,6 @@ export class SalvarRoadmapDto {
   @IsString()
   descricaoGeral: string;
 
-  @IsString()
-  duracaoEstimada: string;
-
-  @IsString()
-  nivel: 'iniciante' | 'intermediario' | 'avancado';
-
   @IsNumber()
   usuarioId: number;
 

@@ -22,15 +22,6 @@ export class Roadmap {
   @Column()
   descricaoGeral: string;
 
-  @Column()
-  duracaoEstimada: string;
-
-  @Column({
-    type: 'enum',
-    enum: ['iniciante', 'intermediario', 'avancado'],
-  })
-  nivel: Nivel;
-
   @ManyToOne(() => Usuario, (usuario) => usuario.roadmaps, {
     onDelete: 'CASCADE',
   })
