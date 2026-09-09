@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { RoadmapService } from './roadmap.service';
 import { CreateRoadmapDto, SalvarRoadmapDto } from './dto/create-roadmap.dto';
@@ -24,9 +25,9 @@ export class RoadmapController {
     return this.roadmapService.salvar(createRoadmapDto);
   }
 
-  @Get()
-  findAll() {
-    return this.roadmapService.findAll();
+  @Get('/usuario/:usuarioId')
+  findAll(@Param('usuarioId', ParseIntPipe) usuarioId: number) {
+    return this.roadmapService.findAll(usuarioId);
   }
 
   @Get(':id')

@@ -190,23 +190,34 @@ Regras:
   }
 
   async salvar(salvarRoadmapDto: SalvarRoadmapDto) {
-    const usuariologado: Usuario | null = await this.usuarioRepository.findOne({
-      where: { id: salvarRoadmapDto.usuarioId },
+    const usuarioLogado = await this.usuarioRepository.findOne({
+      where: {
+        id: salvarRoadmapDto.usuario,
+      },
     });
 
-    if (!usuariologado) return;
+    if (!usuarioLogado) return;
 
     const roadmapCriado = this.roadmapRepository.create({
-      ...salvarRoadmapDto,
-      usuario: usuariologado,
+      tema: salvarRoadmapDto.tema,
+      descricaoGeral: salvarRoadmapDto.descricaoGeral,
+      usuario: usuarioLogado,
+      etapas: salvarRoadmapDto.etapas,
     });
-    const roadmapSalvo = await this.roadmapRepository.save(roadmapCriado);
 
-    return roadmapSalvo;
+    return await this.roadmapRepository.save(roadmapCriado);
   }
 
-  async findAll() {
-    return await this.roadmapRepository.find();
+  async findAll(usuarioId: number) {
+    const roadmaps = await this.roadmapRepository.find({
+      where: {
+        usuario: {
+          id: usuarioId,
+        },
+      },
+    });
+
+    return roadmaps;
   }
 
   async findOne(id: number) {

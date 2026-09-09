@@ -9,8 +9,6 @@ import {
   OneToMany,
 } from 'typeorm';
 
-type Nivel = 'iniciante' | 'intermediario' | 'avancado';
-
 @Entity()
 export class Roadmap {
   @PrimaryGeneratedColumn()
@@ -25,7 +23,7 @@ export class Roadmap {
   @ManyToOne(() => Usuario, (usuario) => usuario.roadmaps, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'usuarioId' })
+  @JoinColumn()
   usuario: Usuario;
 
   @OneToMany(() => Etapa, (etapa) => etapa.roadmap, {

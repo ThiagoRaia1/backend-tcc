@@ -1,12 +1,12 @@
-import { Type } from 'class-transformer';
 import {
-  IsArray,
+  IsInt,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
 } from 'class-validator';
-import { CreateEtapaDto } from 'src/etapa/dto/create-etapa.dto';
+import { Etapa } from 'src/etapa/entities/etapa.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 export class CreateRoadmapDto {
   @IsString()
@@ -18,17 +18,13 @@ export class SalvarRoadmapDto {
   tema: string;
 
   @IsString()
-  descricaoGeral: string;
+  @IsOptional()
+  descricaoGeral?: string;
 
-  @IsNumber()
-  usuarioId: number;
+  @IsInt()
+  @IsNotEmpty()
+  usuario: number;
 
   @IsOptional()
-  @IsNumber()
-  porcentagemConclusao?: number;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateEtapaDto)
-  etapas: CreateEtapaDto[];
+  etapas?: Etapa[];
 }
