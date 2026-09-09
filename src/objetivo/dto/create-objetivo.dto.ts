@@ -9,6 +9,10 @@ export class CreateObjetivoDto {
   @IsOptional()
   descricao?: string;
 
+  @IsString()
+  @IsOptional()
+  anotacao?: string;
+
   @IsBoolean()
   @IsOptional()
   concluido?: boolean;

@@ -20,6 +20,9 @@ export class Objetivo {
   @Column({ nullable: true })
   descricao?: string;
 
+  @Column({ nullable: true })
+  anotacao?: string;
+
   @Column({ default: false })
   concluido: boolean;
 
