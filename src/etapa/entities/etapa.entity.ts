@@ -1,4 +1,5 @@
 import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
+import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { Referencia } from 'src/referencias/entities/referencia.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import {
@@ -51,4 +52,10 @@ export class Etapa {
     nullable: true,
   })
   referencias: Referencia[];
+
+  @OneToMany(() => Quiz, (quiz) => quiz.etapa, {
+    cascade: true,
+    eager: true,
+  })
+  quizzes: Quiz[];
 }

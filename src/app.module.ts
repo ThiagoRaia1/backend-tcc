@@ -10,6 +10,11 @@ import { RoadmapModule } from './roadmap/roadmap.module';
 import { EtapaModule } from './etapa/etapa.module';
 import { ObjetivoModule } from './objetivo/objetivo.module';
 import { ReferenciasModule } from './referencias/referencias.module';
+import { QuizModule } from './quiz/quiz.module';
+import { TentativaQuizModule } from './tentativa-quiz/tentativa-quiz.module';
+import { RespostaQuizModule } from './resposta-quiz/resposta-quiz.module';
+import { AlternativaModule } from './alternativa/alternativa.module';
+import { QuestaoModule } from './questao/questao.module';
 
 @Module({
   imports: [
@@ -19,12 +24,12 @@ import { ReferenciasModule } from './referencias/referencias.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        // host: configService.get('DB_HOST'),
-        // port: +configService.get('DB_PORT'),
-        // username: configService.get('DB_USERNAME'),
-        // password: configService.get('DB_PASSWORD'),
-        // database: configService.get('DB_NAME'),
+        // url: configService.get('DATABASE_URL'),
+        host: configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
         // Não use synchronize: true em produção
         synchronize: true,
@@ -36,6 +41,11 @@ import { ReferenciasModule } from './referencias/referencias.module';
     EtapaModule,
     ObjetivoModule,
     ReferenciasModule,
+    QuizModule,
+    TentativaQuizModule,
+    RespostaQuizModule,
+    AlternativaModule,
+    QuestaoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
