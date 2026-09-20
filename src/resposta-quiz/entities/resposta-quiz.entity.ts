@@ -1,3 +1,14 @@
+import { Alternativa } from 'src/alternativa/entities/alternativa.entity';
+import { Questao } from 'src/questao/entities/questao.entity';
+import { TentativaQuiz } from 'src/tentativa-quiz/entities/tentativa-quiz.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+
 @Entity()
 export class RespostaQuiz {
   @PrimaryGeneratedColumn()

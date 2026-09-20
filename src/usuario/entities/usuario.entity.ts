@@ -1,3 +1,4 @@
+import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import { TentativaQuiz } from 'src/tentativa-quiz/entities/tentativa-quiz.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -24,4 +25,7 @@ export class Usuario {
 
   @OneToMany(() => TentativaQuiz, (tentativa) => tentativa.usuario)
   tentativasQuiz: TentativaQuiz[];
+
+  @OneToMany(() => Quiz, (quiz) => quiz.usuario)
+  quizzes: Quiz[];
 }

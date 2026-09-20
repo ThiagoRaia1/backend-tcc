@@ -6,6 +6,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -53,9 +54,6 @@ export class Etapa {
   })
   referencias: Referencia[];
 
-  @OneToMany(() => Quiz, (quiz) => quiz.etapa, {
-    cascade: true,
-    eager: true,
-  })
+  @ManyToMany(() => Quiz, (quiz) => quiz.etapas)
   quizzes: Quiz[];
 }
