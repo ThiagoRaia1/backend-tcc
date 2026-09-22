@@ -21,9 +21,12 @@ export class QuizController {
     return this.quizService.create(createQuizDto);
   }
 
-  @Get('/usuario/:usuarioId')
-  findAll(@Param('usuarioId', ParseIntPipe) usuarioId: number) {
-    return this.quizService.findAll(usuarioId);
+  @Get('/usuario/:usuarioId/:roadmapId')
+  findAll(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Param('roadmapId', ParseIntPipe) roadmapId: number,
+  ) {
+    return this.quizService.findAll(usuarioId, roadmapId);
   }
 
   @Get(':id')

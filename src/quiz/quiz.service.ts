@@ -62,6 +62,9 @@ export class QuizService {
         where: {
           id: In(etapaIds),
         },
+        relations: {
+          roadmap: true,
+        },
       });
 
       // Verifica se todas as etapas existem
@@ -99,11 +102,14 @@ export class QuizService {
     return quizSalvo;
   }
 
-  async findAll(usuarioId: number) {
+  async findAll(usuarioId: number, roadmapId: number) {
     return this.quizRepository.find({
       where: {
         usuario: {
           id: usuarioId,
+        },
+        roadmap: {
+          id: roadmapId,
         },
       },
       relations: {
