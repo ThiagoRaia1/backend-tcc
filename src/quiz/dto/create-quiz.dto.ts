@@ -6,6 +6,7 @@ import {
   IsString,
   Min,
 } from 'class-validator';
+import { Questao } from 'src/questao/entities/questao.entity';
 
 export class CreateQuizDto {
   @IsString()
@@ -15,9 +16,9 @@ export class CreateQuizDto {
   @IsOptional()
   @IsString()
   descricao?: string;
-
-  @IsOptional()
+  
   @IsInt()
+  @IsOptional()
   quantidadeQuestoes?: number;
 
   // Quiz associado a uma ou mais etapas
@@ -36,4 +37,7 @@ export class CreateQuizDto {
   @IsInt()
   @Min(1)
   usuarioId?: number;
+
+  @IsOptional()
+  questoes?: Questao[];
 }

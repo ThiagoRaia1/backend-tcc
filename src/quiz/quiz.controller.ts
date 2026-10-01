@@ -21,6 +21,11 @@ export class QuizController {
     return this.quizService.create(createQuizDto);
   }
 
+  @Post('gerar')
+  async gerarQuiz(@Body() createQuizDto: CreateQuizDto) {
+    return await this.quizService.gerarQuiz(createQuizDto);
+  }
+
   @Get('/usuario/:usuarioId/:roadmapId')
   findAll(
     @Param('usuarioId', ParseIntPipe) usuarioId: number,

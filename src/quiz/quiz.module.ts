@@ -8,9 +8,20 @@ import { Quiz } from './entities/quiz.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import { Etapa } from 'src/etapa/entities/etapa.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
+import { QuizEtapa } from 'src/quizEtapa/quizEtapa.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Quiz, TentativaQuiz, RespostaQuiz, Roadmap, Etapa, Usuario])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Quiz,
+      TentativaQuiz,
+      RespostaQuiz,
+      Roadmap,
+      Etapa,
+      Usuario,
+      QuizEtapa,
+    ]),
+  ],
   controllers: [QuizController],
   providers: [QuizService],
 })

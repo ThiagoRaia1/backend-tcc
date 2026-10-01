@@ -1,12 +1,11 @@
 import { Objetivo } from 'src/objetivo/entities/objetivo.entity';
-import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { QuizEtapa } from 'src/quizEtapa/quizEtapa.entity';
 import { Referencia } from 'src/referencias/entities/referencia.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -54,6 +53,8 @@ export class Etapa {
   })
   referencias: Referencia[];
 
-  @ManyToMany(() => Quiz, (quiz) => quiz.etapas)
-  quizzes: Quiz[];
+  @OneToMany(() => QuizEtapa, (quizEtapa) => quizEtapa.etapa, {
+    cascade: true,
+  })
+  quizEtapas: QuizEtapa[];
 }
