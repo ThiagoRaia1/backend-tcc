@@ -386,7 +386,7 @@ ${JSON.stringify(conteudoEtapa, null, 2)}
     return `This action updates a #${id} quiz`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quiz`;
+  async remove(id: number) {
+    return await this.quizRepository.delete(id);
   }
 }
