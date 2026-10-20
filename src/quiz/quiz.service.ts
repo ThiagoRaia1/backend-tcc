@@ -16,6 +16,9 @@ import { Usuario } from 'src/usuario/entities/usuario.entity';
 import OpenAI from 'openai';
 import { Questao } from 'src/questao/entities/questao.entity';
 import { QuizEtapa } from 'src/quizEtapa/quizEtapa.entity';
+import { TentativaQuiz } from 'src/tentativa-quiz/entities/tentativa-quiz.entity';
+import { RespostaQuiz } from 'src/resposta-quiz/entities/resposta-quiz.entity';
+import { FinalizarQuizDto } from './dto/finalizar-quiz.dto';
 
 @Injectable()
 export class QuizService {
@@ -39,6 +42,12 @@ export class QuizService {
 
     @InjectRepository(QuizEtapa)
     private readonly quizEtapaRepository: Repository<QuizEtapa>,
+
+    @InjectRepository(TentativaQuiz)
+    private readonly tentativaQuizRepository: Repository<TentativaQuiz>,
+
+    @InjectRepository(RespostaQuiz)
+    private readonly respostaQuizRepository: Repository<RespostaQuiz>,
   ) {}
 
   private async gerarQuestoesDaEtapa(etapa: Etapa, quantidadeQuestoes: number) {
@@ -378,6 +387,110 @@ ${JSON.stringify(conteudoEtapa, null, 2)}
         },
         questoes: true,
         tentativas: true,
+      },
+    });
+  }
+
+  async finalizarQuiz(quizId: number, finalizarQuizDto: FinalizarQuizDto) {
+    const { respostas } = finalizarQuizDto;
+
+    const quiz = await this.quizRepository.findOne({
+      where: { id: quizId },
+      relations: {
+        questoes: {
+          alternativas: true,
+        },
+        usuario: true,
+      },
+    });
+
+    if (!quiz) {
+      throw new NotFoundException('Quiz não encontrado.');
+    }
+
+    if (!respostas || respostas.length === 0) {
+      throw new BadRequestException('Nenhuma resposta foi enviada.');
+    }
+
+    if (respostas.length !== quiz.questoes.length) {
+      throw new BadRequestException(
+        `O quiz possui ${quiz.questoes.length} questões, mas foram enviadas ${respostas.length} respostas.`,
+      );
+    }
+
+    let acertos = 0;
+
+    const respostasParaSalvar: RespostaQuiz[] = [];
+
+    for (const resposta of respostas) {
+      const questao = quiz.questoes.find((q) => q.id === resposta.questaoId);
+
+      if (!questao) {
+        throw new BadRequestException(
+          `A questão ${resposta.questaoId} não pertence a este quiz.`,
+        );
+      }
+
+      const alternativa = questao.alternativas.find(
+        (a) => a.id === resposta.alternativaId,
+      );
+
+      if (!alternativa) {
+        throw new BadRequestException(
+          `A alternativa ${resposta.alternativaId} não pertence à questão ${questao.id}.`,
+        );
+      }
+
+      const correta = alternativa.correta;
+
+      if (correta) {
+        acertos++;
+      }
+
+      respostasParaSalvar.push(
+        this.respostaQuizRepository.create({
+          correta,
+          questao,
+          alternativa,
+        }),
+      );
+    }
+
+    const totalQuestoes = quiz.questoes.length;
+
+    const percentual =
+      totalQuestoes > 0
+        ? Number(((acertos / totalQuestoes) * 100).toFixed(2))
+        : 0;
+
+    const tentativa = this.tentativaQuizRepository.create({
+      pontuacao: acertos,
+      totalQuestoes,
+      percentual,
+      concluido: true,
+      finalizadoEm: new Date(),
+      usuario: quiz.usuario,
+      quiz,
+    });
+
+    const tentativaSalva = await this.tentativaQuizRepository.save(tentativa);
+
+    for (const resposta of respostasParaSalvar) {
+      resposta.tentativa = tentativaSalva;
+    }
+
+    await this.respostaQuizRepository.save(respostasParaSalvar);
+
+    return this.tentativaQuizRepository.findOne({
+      where: {
+        id: tentativaSalva.id,
+      },
+      relations: {
+        quiz: true,
+        respostas: {
+          questao: true,
+          alternativa: true,
+        },
       },
     });
   }

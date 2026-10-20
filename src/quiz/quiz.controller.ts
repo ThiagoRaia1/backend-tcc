@@ -11,6 +11,7 @@ import {
 import { QuizService } from './quiz.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
+import { FinalizarQuizDto } from './dto/finalizar-quiz.dto';
 
 @Controller('quiz')
 export class QuizController {
@@ -32,6 +33,14 @@ export class QuizController {
     @Param('roadmapId', ParseIntPipe) roadmapId: number,
   ) {
     return this.quizService.findAll(usuarioId, roadmapId);
+  }
+
+  @Post(':id/finalizar')
+  finalizarQuiz(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() finalizarQuizDto: FinalizarQuizDto,
+  ) {
+    return this.quizService.finalizarQuiz(id, finalizarQuizDto);
   }
 
   @Get(':id')
