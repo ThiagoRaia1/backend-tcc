@@ -49,8 +49,11 @@ export class QuizController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto) {
-    return this.quizService.update(+id, updateQuizDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateQuizDto: UpdateQuizDto,
+  ) {
+    return this.quizService.update(id, updateQuizDto);
   }
 
   @Delete(':id')

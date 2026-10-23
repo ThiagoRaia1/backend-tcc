@@ -495,8 +495,76 @@ ${JSON.stringify(conteudoEtapa, null, 2)}
     });
   }
 
-  update(id: number, updateQuizDto: UpdateQuizDto) {
-    return `This action updates a #${id} quiz`;
+  async update(id: number, updateQuizDto: UpdateQuizDto) {
+    const quiz = await this.quizRepository.findOne({
+      where: { id },
+      relations: {
+        questoes: {
+          alternativas: true,
+        },
+      },
+    });
+
+    if (!quiz) {
+      throw new NotFoundException('Quiz não encontrado.');
+    }
+
+    // Atualiza o título e a descrição
+    if (updateQuizDto.titulo !== undefined) {
+      quiz.titulo = updateQuizDto.titulo;
+    }
+
+    if (updateQuizDto.descricao !== undefined) {
+      quiz.descricao = updateQuizDto.descricao;
+    }
+
+    // Estrutura recebida pelo frontend
+    const dados = updateQuizDto as UpdateQuizDto & {
+      questoes?: {
+        id: number;
+        enunciado: string;
+        alternativas: {
+          id: number;
+          texto: string;
+          correta: boolean;
+          ordem: number;
+        }[];
+      }[];
+    };
+
+    if (dados.questoes) {
+      for (const questaoDto of dados.questoes) {
+        const questao = quiz.questoes.find((item) => item.id === questaoDto.id);
+
+        if (!questao) {
+          throw new BadRequestException(
+            `A questão ${questaoDto.id} não pertence a este quiz.`,
+          );
+        }
+
+        questao.enunciado = questaoDto.enunciado;
+
+        for (const alternativaDto of questaoDto.alternativas ?? []) {
+          const alternativa = questao.alternativas.find(
+            (item) => item.id === alternativaDto.id,
+          );
+
+          if (!alternativa) {
+            throw new BadRequestException(
+              `A alternativa ${alternativaDto.id} não pertence à questão ${questao.id}.`,
+            );
+          }
+
+          alternativa.texto = alternativaDto.texto;
+          alternativa.correta = alternativaDto.correta;
+          alternativa.ordem = alternativaDto.ordem;
+        }
+      }
+
+      quiz.quantidadeQuestoes = quiz.questoes.length;
+    }
+
+    return await this.quizRepository.save(quiz);
   }
 
   async remove(id: number) {
