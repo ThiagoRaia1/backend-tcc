@@ -15,6 +15,7 @@ import { TentativaQuizModule } from './tentativa-quiz/tentativa-quiz.module';
 import { RespostaQuizModule } from './resposta-quiz/resposta-quiz.module';
 import { AlternativaModule } from './alternativa/alternativa.module';
 import { QuestaoModule } from './questao/questao.module';
+import { CadernoErrosModule } from './caderno-erros/caderno-erros.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { QuestaoModule } from './questao/questao.module';
     RespostaQuizModule,
     AlternativaModule,
     QuestaoModule,
+    CadernoErrosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
