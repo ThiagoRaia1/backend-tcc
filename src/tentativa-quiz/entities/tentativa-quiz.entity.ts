@@ -22,7 +22,12 @@ export class TentativaQuiz {
   @Column()
   totalQuestoes: number;
 
-  @Column({ default: 0 })
+  @Column({
+    type: 'decimal',
+    precision: 5,
+    scale: 2,
+    default: 0,
+  })
   percentual: number;
 
   @Column({ default: false })
