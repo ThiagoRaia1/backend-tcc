@@ -1,6 +1,6 @@
-import { Alternativa } from 'src/alternativa/entities/alternativa.entity';
-import { Questao } from 'src/questao/entities/questao.entity';
-import { TentativaQuiz } from 'src/tentativa-quiz/entities/tentativa-quiz.entity';
+import { Alternativa } from '../../alternativa/entities/alternativa.entity';
+import { Questao } from '../../questao/entities/questao.entity';
+import { TentativaQuiz } from '../../tentativa-quiz/entities/tentativa-quiz.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

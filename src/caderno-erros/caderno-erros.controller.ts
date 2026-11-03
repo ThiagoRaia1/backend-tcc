@@ -11,7 +11,9 @@ import { CadernoErrosService } from './caderno-erros.service';
 
 @Controller('caderno-erros')
 export class CadernoErrosController {
-  constructor(private readonly cadernoErrosService: CadernoErrosService) {}
+  constructor(
+    private readonly cadernoErrosService: CadernoErrosService,
+  ) {}
 
   @Get(':usuarioId')
   listarErros(
@@ -20,7 +22,23 @@ export class CadernoErrosController {
   ) {
     const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
 
-    return this.cadernoErrosService.listarErros(usuarioId, roadmapIdNumero);
+    return this.cadernoErrosService.listarErros(
+      usuarioId,
+      roadmapIdNumero,
+    );
+  }
+
+  @Get(':usuarioId/praticar')
+  gerarQuizPratica(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Query('roadmapId') roadmapId?: string,
+  ) {
+    const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
+
+    return this.cadernoErrosService.gerarQuizPratica(
+      usuarioId,
+      roadmapIdNumero,
+    );
   }
 
   private converterFiltro(
