@@ -1,13 +1,16 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Query,
 } from '@nestjs/common';
 
 import { CadernoErrosService } from './caderno-erros.service';
+import { FinalizarQuizDto } from 'src/quiz/dto/finalizar-quiz.dto';
 
 @Controller('caderno-erros')
 export class CadernoErrosController {
@@ -21,6 +24,34 @@ export class CadernoErrosController {
     const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
 
     return this.cadernoErrosService.listarErros(usuarioId, roadmapIdNumero);
+  }
+
+  @Get(':usuarioId/praticar')
+  gerarQuizPratica(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Query('roadmapId') roadmapId?: string,
+  ) {
+    const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
+
+    return this.cadernoErrosService.gerarQuizPratica(
+      usuarioId,
+      roadmapIdNumero,
+    );
+  }
+
+  @Post(':usuarioId/praticar/finalizar')
+  finalizarQuizPratica(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Body() finalizarQuizDto: FinalizarQuizDto,
+    @Query('roadmapId') roadmapId?: string,
+  ) {
+    const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
+
+    return this.cadernoErrosService.finalizarQuizPratica(
+      usuarioId,
+      finalizarQuizDto,
+      roadmapIdNumero,
+    );
   }
 
   private converterFiltro(
