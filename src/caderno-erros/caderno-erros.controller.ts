@@ -14,7 +14,9 @@ import { FinalizarQuizDto } from 'src/quiz/dto/finalizar-quiz.dto';
 
 @Controller('caderno-erros')
 export class CadernoErrosController {
-  constructor(private readonly cadernoErrosService: CadernoErrosService) {}
+  constructor(
+    private readonly cadernoErrosService: CadernoErrosService,
+  ) {}
 
   @Get(':usuarioId')
   listarErros(
@@ -23,7 +25,10 @@ export class CadernoErrosController {
   ) {
     const roadmapIdNumero = this.converterFiltro(roadmapId, 'roadmapId');
 
-    return this.cadernoErrosService.listarErros(usuarioId, roadmapIdNumero);
+    return this.cadernoErrosService.listarErros(
+      usuarioId,
+      roadmapIdNumero,
+    );
   }
 
   @Get(':usuarioId/praticar')

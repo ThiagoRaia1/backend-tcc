@@ -1,5 +1,5 @@
-import { Alternativa } from 'src/alternativa/entities/alternativa.entity';
-import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { Alternativa } from '../../alternativa/entities/alternativa.entity';
+import { Quiz } from '../../quiz/entities/quiz.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

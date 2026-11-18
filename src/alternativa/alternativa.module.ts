@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AlternativaService } from './alternativa.service';
 import { AlternativaController } from './alternativa.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Alternativa } from './entities/alternativa.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Alternativa])],
   controllers: [AlternativaController],
   providers: [AlternativaService],
 })
