@@ -1,3 +1,4 @@
+import { Card } from 'src/card/entities/card.entity';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { Roadmap } from 'src/roadmap/entities/roadmap.entity';
 import { TentativaQuiz } from 'src/tentativa-quiz/entities/tentativa-quiz.entity';
@@ -28,4 +29,7 @@ export class Usuario {
 
   @OneToMany(() => Quiz, (quiz) => quiz.usuario)
   quizzes: Quiz[];
+  
+  @OneToMany(() => Card, (card) => card.usuario)
+  cards: Card[];
 }

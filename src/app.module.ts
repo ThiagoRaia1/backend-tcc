@@ -16,6 +16,7 @@ import { RespostaQuizModule } from './resposta-quiz/resposta-quiz.module';
 import { AlternativaModule } from './alternativa/alternativa.module';
 import { QuestaoModule } from './questao/questao.module';
 import { CadernoErrosModule } from './caderno-erros/caderno-erros.module';
+import { CardModule } from './card/card.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CadernoErrosModule } from './caderno-erros/caderno-erros.module';
     AlternativaModule,
     QuestaoModule,
     CadernoErrosModule,
+    CardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
