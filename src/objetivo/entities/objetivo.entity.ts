@@ -26,6 +26,9 @@ export class Objetivo {
   @Column({ default: false })
   concluido: boolean;
 
+  @Column({ nullable: true })
+  ordem: number;
+
   @ManyToOne(() => Etapa, (etapa) => etapa.objetivos, {
     onDelete: 'CASCADE',
   })

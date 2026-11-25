@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateObjetivoDto {
   @IsString()
@@ -16,4 +16,8 @@ export class CreateObjetivoDto {
   @IsBoolean()
   @IsOptional()
   concluido?: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  ordem?: number;
 }

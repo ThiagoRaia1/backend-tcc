@@ -88,8 +88,12 @@ export class RoadmapService {
                           concluido: {
                             type: 'boolean',
                           },
+
+                          ordem: {
+                            type: 'integer',
+                          },
                         },
-                        required: ['titulo', 'descricao', 'concluido'],
+                        required: ['titulo', 'descricao', 'concluido', 'ordem'],
                       },
                     },
                   },
@@ -139,6 +143,7 @@ O JSON deve seguir exatamente esta estrutura:
           "titulo": "string",
           "descricao": "string",
           "concluido": false
+          "ordem": 1,
         }
       ]
     }
@@ -157,7 +162,7 @@ Regras:
 - As ordens seguintes devem ser sequenciais: 2, 3, 4...
 - "concluido" deve ser sempre false.
 - "objetivos" deve ser um array.
-- Cada objetivo deve possuir "titulo", "descricao" e "concluido".
+- Cada objetivo deve possuir "titulo", "descricao", "concluido" e "ordem".
 - Não adicione propriedades extras.
       `,
         },
@@ -227,19 +232,26 @@ Regras:
   async update(id: number, updateRoadmapDto: Partial<SalvarRoadmapDto>) {
     const roadmap = await this.roadmapRepository.findOne({
       where: { id },
-      relations: ['usuario'], // opcional (se precisar)
+      relations: ['usuario'],
     });
 
     if (!roadmap) {
       throw new NotFoundException('Roadmap não encontrado.');
     }
 
-    // Mescla os dados antigos com os novos
+    if (updateRoadmapDto.etapas) {
+      updateRoadmapDto.etapas.forEach((etapa) => {
+        if (etapa.objetivos) {
+          etapa.objetivos.forEach((objetivo, index) => {
+            objetivo.ordem = index + 1;
+          });
+        }
+      });
+    }
+
     Object.assign(roadmap, updateRoadmapDto);
 
-    const roadmapAtualizado = await this.roadmapRepository.save(roadmap);
-
-    return roadmapAtualizado;
+    return await this.roadmapRepository.save(roadmap);
   }
 
   async remove(id: number) {

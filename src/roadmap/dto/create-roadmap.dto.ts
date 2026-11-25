@@ -1,12 +1,10 @@
 import {
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { Etapa } from 'src/etapa/entities/etapa.entity';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 export class CreateRoadmapDto {
   @IsString()
